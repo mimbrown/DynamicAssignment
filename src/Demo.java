@@ -19,13 +19,13 @@ public class Demo {
 		return longestPal;*/
 		if(s.length() == 0 || s.length() == 1) return s;
 		int front = 0, back = s.length()-1;
-		List<String> possibles = new ArrayList<String>(s.length());
 		if(s.charAt(front) == s.charAt(back)) {
 			return Character.toString(s.charAt(front)) +
-					findPalRecurs(s.substring(front + 1, back - 1) + Character.toString(s.charAt(back)));
+					findPalRecurs(s.substring(front + 1, back)) + Character.toString(s.charAt(back));
 		}
-		possibles.add(findPalRecurs(s.substring(front + 1, back)));
-		possibles.add(findPalRecurs(s.substring(front, back - 1)));
+		List<String> possibles = new ArrayList<String>(s.length());
+		possibles.add(findPalRecurs(s.substring(front + 1, back + 1)));
+		possibles.add(findPalRecurs(s.substring(front, back)));
 		String longestPal = "";
 		for(String c : possibles) {
 			if(c.length() > longestPal.length()) longestPal = c;
