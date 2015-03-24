@@ -100,6 +100,7 @@ public class Demo {
 				m[i][j] = new Node(s.substring(j, s.length() - i), max, parent, removed);
 			}
 		}
+		// now find the maximum size palindrome from the last elements in each row
 		int max = 0;
 		Node currentNode = null;
 		for(int i = 0; i < arraySize; i++) {
@@ -107,11 +108,11 @@ public class Demo {
 				max = m[i][arraySize - 1 - i].getI();
 				currentNode = m[i][arraySize - 1 - i];
 			}
-		} //ACGTGTCAAAATCG
+		} //ACGTGTCAAAATCG for testing purposes
 		System.out.println(max);
+		// finally, trace back through the parent pointers and recreate the palindrome
 		String toReturn = "";
-		
-		if(currentNode != null)
+		if(currentNode != null) {
 			while(currentNode.getParent() != null) {
 				
 				if(currentNode.getRemoved().length() == 1) toReturn += currentNode.getRemoved();
@@ -122,6 +123,8 @@ public class Demo {
 				}
 				currentNode = currentNode.getParent();
 			}
+		}
+		// print out the resulting matrix in a couple different forms
 		for(int i = 0; i < arraySize; i++) {
 			for(int j = 0; j < arraySize - i; j++) {
 				System.out.print(m[i][j].getI() + " ");
