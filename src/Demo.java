@@ -28,7 +28,9 @@ public class Demo {
 				m[i][j] = new Node("", 0, null, "");
 			}
 		}
+		
 		m[0][0] = new Node(s, 0, null, "");
+		
 		for(int i = 1; i < arraySize; i++) {
 			m[i][0] = new Node(s.substring(0, s.length() - i), 0, m[i-1][0], "");
 			m[0][i] = new Node(s.substring(i, s.length()), 0, m[0][i-1], "");
@@ -39,35 +41,63 @@ public class Demo {
 				if(isSame(m[i-1][j-1].getS())) {
 					isSame = 2;
 				}
-				else isSame = 0;
-				if(m[i-1][j].getS().length() == 1) up = 1;
-				else up = 0;
-				if(m[i][j-1].getS().length() == 1) left = 1;
-				else left = 0;
+				else 
+				{
+					isSame = 0;
+				}
+				if(m[i-1][j].getS().length() == 1) 
+				{
+					up = 1;
+				}	
+				else 
+				{
+					up = 0;
+				}
+				if(m[i][j-1].getS().length() == 1) 
+				{
+					left = 1;
+				}
+				else 
+				{
+					left = 0;
+				}
+				
 				int diagonalOption = m[i-1][j-1].getI() + isSame;
 				int upOption = m[i-1][j].getI() + up;
 				int leftOption = m[i][j-1].getI() + left;
 				int max = upOption;
 				Node parent = m[i-1][j];
 				String removed = "";
-				if(up == 1) removed = m[i-1][j].getS();
-				if(leftOption > max) {
+				
+				if(up == 1) 
+				{
+					removed = m[i-1][j].getS();
+				}
+				if(leftOption > max) 
+				{
 					max = leftOption;
 					parent = m[i][j-1];
 					removed = "";
-					if(left == 1) removed = m[i][j-1].getS();
+					if(left == 1) 
+					{
+						removed = m[i][j-1].getS();
+					}
 				}
 				if(diagonalOption > max) {
 					max = diagonalOption;
 					parent = m[i-1][j-1];
 					removed = "";
-					if(isSame == 2) removed = Character.toString(m[i-1][j-1].getS().charAt(0))
-							+ Character.toString(m[i-1][j-1].getS().charAt(0));
+					if(isSame == 2) 
+					{
+						removed = Character.toString(m[i-1][j-1].getS().charAt(0)) + Character.toString(m[i-1][j-1].getS().charAt(0));
+					}
 				}
 				m[i][j] = new Node(s.substring(i, s.length() - j), max, parent, removed);
 			}
+			if(s.length() == 1) m[1][1] = new Node(s.substring(0, s.length()), 1, m[0][i-1], "");
 		}
-		int max = 0;
+		int max = 1;
+		if(s.length() == 0) max = 0;
 		Node currentNode = null;
 		for(int i = 0; i < arraySize; i++) {
 			if(m[i][arraySize - 1 - i].getI() > max) {
@@ -77,12 +107,15 @@ public class Demo {
 		} //ACGTGTCAAAATCG
 		System.out.println(max);
 		String toReturn = "";
-		while(currentNode.getParent() != null) {
-			if(currentNode.getRemoved().length() == 1) toReturn += currentNode.getRemoved();
-			else if(currentNode.getRemoved().length() == 2) toReturn = currentNode.getRemoved().substring(0, 1)
-					+ toReturn + currentNode.getRemoved().substring(0, 1);
-			currentNode = currentNode.getParent();
-		}
+		
+		if(currentNode != null)
+			while(currentNode.getParent() != null) {
+				
+				if(currentNode.getRemoved().length() == 1) toReturn += currentNode.getRemoved();
+				else if(currentNode.getRemoved().length() == 2) toReturn = currentNode.getRemoved().substring(0, 1)
+						+ toReturn + currentNode.getRemoved().substring(0, 1);
+				currentNode = currentNode.getParent();
+			}
 		for(int i = 0; i < arraySize; i++) {
 			for(int j = 0; j < arraySize; j++) {
 				System.out.print(m[i][j].getI() + " ");
